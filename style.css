@@ -1,0 +1,135 @@
+/* ===== DESIGN TOKENS ===== */
+:root{
+  --bg:#F4F7FA;--card:#fff;--border:#E5E9F0;
+  --text:#1F2937;--muted:#6B7280;--accent:#3B82F6;--accent2:#10B981;--danger:#EF4444;
+  --radius:10px;--shadow:0 1px 3px rgba(0,0,0,.06);
+  --font:'Plus Jakarta Sans',system-ui,sans-serif;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{font-size:15px}
+body{font-family:var(--font);background:var(--bg);color:var(--text);line-height:1.6}
+
+/* ===== LAYOUT ===== */
+#app{max-width:1100px;margin:0 auto;padding:1.5rem}
+
+/* === TOPBAR === */
+.topbar{display:flex;justify-content:space-between;align-items:center;margin-bottom:1.25rem}
+.topbar-left{display:flex;align-items:center;gap:.5rem;font-weight:700;font-size:1.15rem;color:var(--accent)}
+.topbar-left i{font-size:1.4rem}
+.topbar-actions{display:flex;gap:.5rem}
+.btn-icon{width:38px;height:38px;border:1px solid var(--border);border-radius:8px;background:var(--card);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:1rem;color:var(--muted);transition:.2s}
+.btn-icon:hover{background:var(--accent);color:#fff;border-color:var(--accent)}
+
+/* === TABS === */
+.tab-nav{display:flex;gap:.35rem;margin-bottom:1.5rem;background:var(--card);padding:4px;border-radius:var(--radius);border:1px solid var(--border)}
+.tab-btn{flex:1;padding:.65rem .5rem;border:none;border-radius:8px;background:transparent;font-family:var(--font);font-weight:600;font-size:.88rem;color:var(--muted);cursor:pointer;transition:.25s;display:flex;align-items:center;justify-content:center;gap:.4rem}
+.tab-btn:hover{color:var(--text)}
+.tab-btn.active{background:var(--accent);color:#fff;box-shadow:0 2px 8px rgba(59,130,246,.3)}
+.tab-content{display:none}
+.tab-content.active{display:block}
+
+/* === CARDS === */
+.card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:1.25rem;margin-bottom:1.25rem;box-shadow:var(--shadow)}
+.card-title{font-size:1rem;font-weight:700;margin-bottom:1rem;display:flex;align-items:center;gap:.45rem;color:var(--text)}
+.card-title i{color:var(--accent);font-size:1.1rem}
+
+/* === FORMS === */
+.form-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:1rem}
+.fg{display:flex;flex-direction:column;gap:.3rem}
+.fg label{font-size:.82rem;font-weight:600;color:var(--muted)}
+.fg input,.fg select,.fg textarea{padding:.55rem .7rem;border:1px solid var(--border);border-radius:7px;font-family:var(--font);font-size:.9rem;outline:none;transition:.2s;background:#FAFBFC}
+.fg input:focus,.fg select:focus,.fg textarea:focus{border-color:var(--accent);background:#fff}
+
+/* === TABLES === */
+.scroll-x{overflow-x:auto;-webkit-overflow-scrolling:touch}
+.tbl{width:100%;border-collapse:collapse;margin-bottom:.75rem;font-size:.88rem}
+.tbl th,.tbl td{border:1px solid var(--border);padding:.5rem .6rem;text-align:center}
+.tbl th{background:#F8FAFC;font-weight:700;color:var(--muted);font-size:.78rem;text-transform:uppercase;letter-spacing:.3px}
+.tbl td input,.tbl td select,.tbl td textarea{border:none;background:transparent;text-align:center;width:100%;font-family:var(--font);font-size:.88rem;outline:none;padding:2px}
+.tbl td textarea{text-align:left;resize:vertical;min-height:40px}
+.tbl td input:focus,.tbl td textarea:focus{background:#EFF6FF;border-radius:4px}
+.tbl .foot td{font-weight:700;background:#F0F9FF;border-top:2px solid var(--accent)}
+.r{text-align:right!important}
+.btn-del{background:#FEE2E2;color:var(--danger);border:none;border-radius:6px;padding:4px 8px;cursor:pointer;transition:.2s}
+.btn-del:hover{background:#FECACA}
+.btn-add{display:inline-flex;align-items:center;gap:.4rem;padding:.5rem 1rem;border:1px dashed var(--border);border-radius:7px;background:transparent;font-family:var(--font);font-weight:600;font-size:.85rem;color:var(--muted);cursor:pointer;transition:.2s;margin-top:.25rem}
+.btn-add:hover{border-color:var(--accent);color:var(--accent);background:#EFF6FF}
+
+/* === EXPORT BAR === */
+.export-bar{display:flex;justify-content:space-between;align-items:center;background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:.75rem 1.25rem;margin-bottom:1rem;box-shadow:var(--shadow)}
+.export-label{font-weight:700;font-size:.95rem;color:var(--text);display:flex;align-items:center;gap:.4rem}
+.export-label i{color:var(--accent);font-size:1.05rem}
+.export-btns{display:flex;gap:.5rem}
+.btn-export{padding:.5rem 1rem;border:none;border-radius:7px;font-family:var(--font);font-weight:600;font-size:.85rem;cursor:pointer;display:inline-flex;align-items:center;gap:.4rem;transition:.25s}
+.btn-export.pdf{background:#FEE2E2;color:#DC2626}
+.btn-export.pdf:hover{background:#DC2626;color:#fff}
+.btn-export.word{background:#DBEAFE;color:#2563EB}
+.btn-export.word:hover{background:#2563EB;color:#fff}
+
+/* === SUMMARY (RPE) === */
+.summary-grid{display:flex;align-items:center;justify-content:center;gap:.75rem;flex-wrap:wrap;margin-bottom:1rem}
+.sbox{background:#F8FAFC;border:1px solid var(--border);border-radius:var(--radius);padding:1rem 1.25rem;text-align:center;min-width:130px;flex:1}
+.sbox.hl{background:#ECFDF5;border-color:#A7F3D0}
+.slabel{font-size:.75rem;text-transform:uppercase;font-weight:700;color:var(--muted);letter-spacing:.5px;margin-bottom:.25rem}
+.sval{font-size:2rem;font-weight:800;line-height:1}
+.blue{color:var(--accent)}.red{color:var(--danger)}.green{color:var(--accent2)}
+.sop{font-size:1.5rem;font-weight:700;color:var(--muted)}
+.jp-box{background:linear-gradient(135deg,var(--accent),#1D4ED8);color:#fff;border-radius:var(--radius);padding:1.25rem;text-align:center;font-size:1.1rem}
+.jp-box strong{font-size:2.5rem;margin:0 .5rem}
+
+/* === TTD === */
+.ttd-section .form-grid{margin-bottom:1rem}
+.only-print{display:none}
+.ttd-print{display:flex;justify-content:space-between;padding:0 2rem;margin-top:1.5rem;gap:2rem}
+.ttd-col{flex:1;text-align:center}
+.ttd-space{height:80px}
+.ttd-name{font-weight:700;text-decoration:underline;margin-bottom:.15rem}
+.ttd-nip{font-size:.88rem;color:var(--muted)}
+
+/* === PROMES specific === */
+.tbl-promes th,.tbl-promes td{padding:.35rem .25rem;font-size:.78rem}
+.tbl-promes td input{font-size:.78rem;padding:1px;width:28px}
+.tbl-promes td textarea{min-height:36px;font-size:.8rem}
+
+/* ==============================
+   PRINT / PDF STYLES
+   ============================== */
+@media print{
+  @page{size:A4 landscape;margin:8mm}
+  body{background:#fff!important;color:#000!important;font-size:10pt;font-family:Arial,Helvetica,sans-serif!important}
+  #app{max-width:100%!important;padding:0!important}
+
+  .no-print{display:none!important}
+  .only-print{display:flex!important}
+
+  .tab-content{display:block!important}              /* show active tab only — handled by JS */
+  .card{box-shadow:none!important;border:none!important;padding:.5rem 0!important;margin-bottom:1rem!important;page-break-inside:avoid}
+  .card-title i{color:#000!important}
+
+  /* Form values as plain text */
+  input,textarea,select{
+    border:none!important;background:transparent!important;font-weight:600!important;color:#000!important;
+    box-shadow:none!important;-webkit-appearance:none;appearance:none;padding:0!important;
+    white-space:pre-wrap!important;word-wrap:break-word!important;overflow:visible!important;resize:none!important
+  }
+  textarea{height:auto!important}
+
+  /* Table */
+  .tbl th,.tbl td{border:1px solid #000!important;color:#000!important;padding:3px 4px!important}
+  .tbl th{background:#e9ecef!important;-webkit-print-color-adjust:exact!important;print-color-adjust:exact!important}
+
+  /* Summary */
+  .sbox{border:1px solid #000!important}.sval,.slabel,.sop{color:#000!important}
+  .jp-box{background:#fff!important;color:#000!important;border:2px solid #000!important}
+  .jp-box strong{color:#000!important}
+
+  .topbar{border-bottom:2px solid #000;padding-bottom:.5rem;margin-bottom:1rem}
+  .topbar-left{color:#000!important}
+
+  .ttd-print{padding:0 1.5rem}
+  .ttd-name,.ttd-nip{color:#000!important}
+
+  /* Page break for print-all mode */
+  .tab-content.print-page + .tab-content.print-page{page-break-before:always}
+  .tab-content.print-page{display:block!important}
+}

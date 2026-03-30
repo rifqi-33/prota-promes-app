@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Administrasi Guru - RPE, PROTA, PROMES</title>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div id="app">
+        <!-- Top Bar -->
+        <header class="topbar">
+            <div class="topbar-left">
+                <i class="fa-solid fa-graduation-cap"></i>
+                <span>Administrasi Guru</span>
+            </div>
+            <div class="topbar-actions no-print">
+                <button class="btn-export pdf" onclick="printAll()" title="Cetak Semua ke PDF"><i class="fa-solid fa-file-pdf"></i> Cetak Semua PDF</button>
+                <button class="btn-export word" onclick="exportWordAll()" title="Export Semua ke Word"><i class="fa-solid fa-file-word"></i> Export Semua Word</button>
+            </div>
+        </header>
+
+        <!-- Tab Navigation -->
+        <nav class="tab-nav no-print">
+            <button class="tab-btn active" data-tab="rpe"><i class="fa-solid fa-calendar-check"></i> Pekan Efektif</button>
+            <button class="tab-btn" data-tab="prota"><i class="fa-solid fa-book"></i> Program Tahunan</button>
+            <button class="tab-btn" data-tab="promes"><i class="fa-solid fa-table-columns"></i> Program Semester</button>
+        </nav>
+
+        <!-- Shared Identity Section -->
+        <section class="card" id="identityCard">
+            <h2 class="card-title"><i class="fa-solid fa-school"></i> Identitas</h2>
+            <div class="form-grid">
+                <div class="fg"><label>Satuan Pendidikan</label><input type="text" id="satuanPendidikan" placeholder="SMA Negeri 1 ..."></div>
+                <div class="fg"><label>Mata Pelajaran</label><input type="text" id="mataPelajaran" placeholder="Matematika"></div>
+                <div class="fg"><label>Kelas / Fase</label><input type="text" id="kelasFase" placeholder="X / Fase E"></div>
+                <div class="fg"><label>Tahun Pelajaran</label><input type="text" id="tahunPelajaran" placeholder="2025/2026"></div>
+                <div class="fg"><label>Semester</label>
+                    <select id="semester"><option value="Ganjil">Ganjil</option><option value="Genap">Genap</option></select>
+                </div>
+                <div class="fg"><label>Jam Pelajaran / Minggu</label><input type="number" id="jpPerMinggu" value="4" min="1"></div>
+            </div>
+        </section>
+
+        <!-- =================== RPE TAB =================== -->
+        <div class="tab-content active" id="tab-rpe">
+            <div class="export-bar no-print">
+                <span class="export-label"><i class="fa-solid fa-calendar-check"></i> Rencana Pekan Efektif</span>
+                <div class="export-btns">
+                    <button class="btn-export pdf" onclick="printTab('rpe')"><i class="fa-solid fa-file-pdf"></i> Cetak PDF</button>
+                    <button class="btn-export word" onclick="exportWord('rpe')"><i class="fa-solid fa-file-word"></i> Export Word</button>
+                </div>
+            </div>
+            <section class="card">
+                <h2 class="card-title"><i class="fa-regular fa-calendar-days"></i> I. Rincian Bulan &amp; Minggu</h2>
+                <table class="tbl" id="tblMonth">
+                    <thead><tr><th>No</th><th>Bulan</th><th>Jumlah Minggu</th><th class="no-print">Aksi</th></tr></thead>
+                    <tbody></tbody>
+                    <tfoot><tr class="foot"><td colspan="2" class="r">Total Minggu</td><td id="ftTotalMinggu">0</td><td class="no-print"></td></tr></tfoot>
+                </table>
+                <button class="btn-add no-print" onclick="addMonthRow()"><i class="fa-solid fa-plus"></i> Tambah</button>
+            </section>
+
+            <section class="card">
+                <h2 class="card-title"><i class="fa-solid fa-ban"></i> II. Minggu Tidak Efektif</h2>
+                <table class="tbl" id="tblNonEff">
+                    <thead><tr><th>No</th><th>Uraian Kegiatan</th><th>Jumlah Minggu</th><th class="no-print">Aksi</th></tr></thead>
+                    <tbody></tbody>
+                    <tfoot><tr class="foot"><td colspan="2" class="r">Total Tidak Efektif</td><td id="ftTotalNonEff">0</td><td class="no-print"></td></tr></tfoot>
+                </table>
+                <button class="btn-add no-print" onclick="addNonEffRow()"><i class="fa-solid fa-plus"></i> Tambah</button>
+            </section>
+
+            <section class="card summary-card">
+                <h2 class="card-title"><i class="fa-solid fa-calculator"></i> III. Hasil Perhitungan</h2>
+                <div class="summary-grid">
+                    <div class="sbox"><div class="slabel">Total Minggu</div><div class="sval blue" id="sTotalMinggu">0</div></div>
+                    <div class="sop">&minus;</div>
+                    <div class="sbox"><div class="slabel">Tidak Efektif</div><div class="sval red" id="sTotalNonEff">0</div></div>
+                    <div class="sop">=</div>
+                    <div class="sbox hl"><div class="slabel">Minggu Efektif</div><div class="sval green" id="sTotalEff">0</div></div>
+                </div>
+                <div class="jp-box">
+                    <span id="jpFormula">0 × 0 =</span>
+                    <strong id="jpTotal">0</strong> <span>Jam Pelajaran</span>
+                </div>
+            </section>
+        </div>
+
+        <!-- =================== PROTA TAB =================== -->
+        <div class="tab-content" id="tab-prota">
+            <div class="export-bar no-print">
+                <span class="export-label"><i class="fa-solid fa-book"></i> Program Tahunan</span>
+                <div class="export-btns">
+                    <button class="btn-export pdf" onclick="printTab('prota')"><i class="fa-solid fa-file-pdf"></i> Cetak PDF</button>
+                    <button class="btn-export word" onclick="exportWord('prota')"><i class="fa-solid fa-file-word"></i> Export Word</button>
+                </div>
+            </div>
+            <section class="card">
+                <h2 class="card-title"><i class="fa-solid fa-list-ol"></i> Program Tahunan</h2>
+                <table class="tbl" id="tblProta">
+                    <thead><tr><th width="5%">No</th><th width="12%">Semester</th><th>Tujuan Pembelajaran / Kompetensi Dasar</th><th width="10%">JP</th><th width="15%">Keterangan</th><th class="no-print" width="5%">Aksi</th></tr></thead>
+                    <tbody></tbody>
+                    <tfoot><tr class="foot"><td colspan="3" class="r">Total JP</td><td id="ftProtaJp">0</td><td></td><td class="no-print"></td></tr></tfoot>
+                </table>
+                <button class="btn-add no-print" onclick="addProtaRow()"><i class="fa-solid fa-plus"></i> Tambah</button>
+            </section>
+        </div>
+
+        <!-- =================== PROMES TAB =================== -->
+        <div class="tab-content" id="tab-promes">
+            <div class="export-bar no-print">
+                <span class="export-label"><i class="fa-solid fa-table-columns"></i> Program Semester</span>
+                <div class="export-btns">
+                    <button class="btn-export pdf" onclick="printTab('promes')"><i class="fa-solid fa-file-pdf"></i> Cetak PDF</button>
+                    <button class="btn-export word" onclick="exportWord('promes')"><i class="fa-solid fa-file-word"></i> Export Word</button>
+                </div>
+            </div>
+            <section class="card">
+                <h2 class="card-title"><i class="fa-solid fa-border-all"></i> Program Semester</h2>
+                <div class="scroll-x">
+                    <table class="tbl tbl-promes" id="tblPromes">
+                        <thead id="thPromes"></thead>
+                        <tbody></tbody>
+                        <tfoot><tr class="foot"><td colspan="2" class="r">Total JP</td><td id="ftPromesJp">0</td><td colspan="32"></td></tr></tfoot>
+                    </table>
+                </div>
+                <button class="btn-add no-print" onclick="addPromesRow()"><i class="fa-solid fa-plus"></i> Tambah</button>
+            </section>
+        </div>
+
+        <!-- Tanda Tangan (Shared) -->
+        <section class="card ttd-section" id="ttdSection">
+            <h2 class="card-title no-print"><i class="fa-solid fa-signature"></i> Tanda Tangan</h2>
+            <div class="form-grid no-print">
+                <div class="fg"><label>Kota / Kabupaten</label><input type="text" id="kota" placeholder="Jakarta"></div>
+                <div class="fg"><label>Tanggal</label><input type="date" id="tglTtd"></div>
+                <div class="fg"><label>Nama Kepala Sekolah</label><input type="text" id="namaKepsek" placeholder="Drs. Ahmad, M.Pd."></div>
+                <div class="fg"><label>NIP Kepala Sekolah</label><input type="text" id="nipKepsek" placeholder="196X..."></div>
+                <div class="fg"><label>Nama Guru Mata Pelajaran</label><input type="text" id="namaGuru" placeholder="Siti Aminah, S.Pd."></div>
+                <div class="fg"><label>NIP Guru</label><input type="text" id="nipGuru" placeholder="198X..."></div>
+            </div>
+
+            <!-- Print-only TTD block -->
+            <div class="ttd-print only-print">
+                <div class="ttd-col">
+                    <p>Mengetahui,</p>
+                    <p>Kepala Sekolah,</p>
+                    <div class="ttd-space"></div>
+                    <p class="ttd-name" id="printKepsek"></p>
+                    <p class="ttd-nip" id="printNipKepsek"></p>
+                </div>
+                <div class="ttd-col right">
+                    <p id="printKotaTanggal"></p>
+                    <p>Guru Mata Pelajaran,</p>
+                    <div class="ttd-space"></div>
+                    <p class="ttd-name" id="printGuru"></p>
+                    <p class="ttd-nip" id="printNipGuru"></p>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
